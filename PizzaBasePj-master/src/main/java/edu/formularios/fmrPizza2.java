@@ -58,16 +58,11 @@ public class fmrPizza2 {
 
         Border bordeNegroGrueso = BorderFactory.createLineBorder(Color.BLACK, 2);
 
-        // Aplicar el borde a todos los componentes principales del formulario
         aplicarBorde(jPanelPincipal, bordeNegroGrueso);
-        //aplicarBorde(ComboPrepararPizza, bordeNegroGrueso);
-        //aplicarBorde(txtPizza, bordeNegroGrueso);
+
         aplicarBorde(btnAddIngrediente, bordeNegroGrueso);
-        //aplicarBorde(lblTotal, bordeNegroGrueso);
-        // aplicarBorde(lista1, bordeNegroGrueso);
         aplicarBorde(preparaPizzaButton, bordeNegroGrueso);
-        //aplicarBorde(list2, bordeNegroGrueso);
-        //aplicarBorde(comboTipoPizza, bordeNegroGrueso);
+
 
         //aplicarBorde(ComboRemoverIngredientes, bordeNegroGrueso);
         aplicarBorde(smalRadioButton, bordeNegroGrueso);
@@ -80,6 +75,7 @@ public class fmrPizza2 {
         cargarTipoPizza();
 
         cargarToppings();
+
         ButtonGroup sizeGroup = new ButtonGroup();
         sizeGroup.add(smalRadioButton);
         sizeGroup.add(medianaRadioButton);
@@ -89,7 +85,7 @@ public class fmrPizza2 {
         // Establece Small como seleccionado por defecto
         smalRadioButton.setSelected(true);
 
-        comboTipoPizza.addActionListener(new ActionListener() {
+        comboTipoPizza.addActionListener(new ActionListener() {//comboListadePizzas
             public void actionPerformed(ActionEvent e) {
 
 
@@ -118,6 +114,9 @@ public class fmrPizza2 {
                 lblTotal.setText(String.valueOf(total));
 
                 txtPizza.setText(tipoPizzaSeleccionada);
+                smalRadioButton.setSelected(true);
+
+
             }
         });
 
@@ -157,7 +156,9 @@ public class fmrPizza2 {
         preparaPizzaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                modeloLista2.clear();
                 prepararPizza();
+
             }
 
         });
@@ -216,8 +217,10 @@ public class fmrPizza2 {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (smalRadioButton.isSelected()) {
+                    modeloLista2.clear();
                     precioAdicional = 0;
                     actualizarTotal();
+
                 }
             }
         });
@@ -226,8 +229,10 @@ public class fmrPizza2 {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (medianaRadioButton.isSelected()) {
+                    modeloLista2.clear();
                     precioAdicional = total * 0.2; // Aumenta el precio en un 20%
                     actualizarTotal();
+
                 }
             }
         });
@@ -236,8 +241,10 @@ public class fmrPizza2 {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (grandeRadioButton.isSelected()) {
+                    modeloLista2.clear();
                     precioAdicional = total * 0.3; // Aumenta el precio en un 30%
                     actualizarTotal();
+
                 }
             }
         });
@@ -246,8 +253,10 @@ public class fmrPizza2 {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (extraGrandeRadioButton.isSelected()) {
+                    modeloLista2.clear();
                     precioAdicional = total * 0.4; // Aumenta el precio en un 40%
                     actualizarTotal();
+
                 }
             }
         });
@@ -273,6 +282,7 @@ public class fmrPizza2 {
     }
     private void cargarTipoPizza(){
         PizzaDeSobras pizzadesobras = new PizzaDeSobras("Pizza de Sobras");
+
         tiposPizza.add(pizzadesobras.getName());
 
         PizzaExotica pizzaexotica = new PizzaExotica("Pizza Exotica");

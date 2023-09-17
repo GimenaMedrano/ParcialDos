@@ -20,8 +20,5 @@ public class Chicago extends Pizza {
 
     }
 
-    @Override
-    public String toString() {
-        return "Chicago{}";
-    }
+
 }
