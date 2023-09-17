@@ -1,11 +1,7 @@
 package edu.pizza;
 
 
-import edu.formularios.fmrPizza1;
-import edu.formularios.frmPizza;
-import edu.pizza.base.Pizza;
-import edu.pizza.base.Topping;
-import edu.pizza.especialidades.PizzaItaliana;
+import edu.formularios.fmrPizza2;
 
 import javax.swing.*;
 
@@ -20,7 +16,7 @@ public class Main {
 //        frame.setVisible(true);
 
         // Crear una instancia del formulario fmrPizza1
-        fmrPizza1 formularioPizza = new fmrPizza1();
+        fmrPizza2 formularioPizza = new fmrPizza2();
 
         // Configurar la ventana
         JFrame frame = new JFrame("Formulario de Pizza");

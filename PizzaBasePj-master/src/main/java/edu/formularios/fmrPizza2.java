@@ -13,23 +13,25 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class fmrPizza1 {
+public class fmrPizza2 {
     private JPanel jPanelPincipal;
     private JComboBox ComboPrepararPizza;
     private JTextField txtPizza;
     private JButton btnAddIngrediente;
     private JLabel lblTotal;
     private JList lista1;
+    private JList LISTA;
     private JButton preparaPizzaButton;
     private JList list2;
     private JComboBox comboTipoPizza;
-    private JButton buttonRemoverIngredientes;
-    private JComboBox ComboRemoverIngredientes;
+
     private JRadioButton smalRadioButton;
     private JRadioButton medianaRadioButton;
     private JRadioButton grandeRadioButton;
@@ -45,14 +47,14 @@ public class fmrPizza1 {
     private double total;
 
     private double precioAdicional = 0;
-    private JPanel panel1;
+
 
     private void aplicarBorde(JComponent componente, Border borde) {
         componente.setBorder(borde);
     }
 
 
-    public fmrPizza1() {
+    public fmrPizza2() {
 
         Border bordeNegroGrueso = BorderFactory.createLineBorder(Color.BLACK, 2);
 
@@ -66,7 +68,7 @@ public class fmrPizza1 {
         aplicarBorde(preparaPizzaButton, bordeNegroGrueso);
         //aplicarBorde(list2, bordeNegroGrueso);
         //aplicarBorde(comboTipoPizza, bordeNegroGrueso);
-        aplicarBorde(buttonRemoverIngredientes, bordeNegroGrueso);
+
         //aplicarBorde(ComboRemoverIngredientes, bordeNegroGrueso);
         aplicarBorde(smalRadioButton, bordeNegroGrueso);
         aplicarBorde(medianaRadioButton, bordeNegroGrueso);
@@ -90,17 +92,19 @@ public class fmrPizza1 {
         comboTipoPizza.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                modeloLista2.clear();
+
 
                 // Obtén el tipo de pizza seleccionado por el usuario
                 String tipoPizzaSeleccionada = (String) comboTipoPizza.getSelectedItem();
+                modeloLista2.clear();
 
-                // Obtén la lista de toppings asociados a ese tipo de pizza desde el mapa pizzaToppings
-                List<Topping> toppingsPizza = pizzaToppings.get(tipoPizzaSeleccionada);
 
 
                 // Limpia la lista actual
                 modeloLista.clear();
+
+                // Obtén la lista de toppings asociados a ese tipo de pizza desde el mapa pizzaToppings
+                List<Topping> toppingsPizza = pizzaToppings.get(tipoPizzaSeleccionada);
 
 
                 // Agrega los toppings de la pizza seleccionada a la lista
@@ -112,10 +116,16 @@ public class fmrPizza1 {
                 // Calcula el total de los precios de los toppings
                 total = toppingsPizza.stream().mapToDouble(Topping::getPrecio).sum();
                 lblTotal.setText(String.valueOf(total));
-                cargarIngredientesEnComboRemover();
+
                 txtPizza.setText(tipoPizzaSeleccionada);
             }
         });
+
+
+
+
+
+
 
 
 
@@ -131,8 +141,6 @@ public class fmrPizza1 {
                 lista1.setModel(modeloLista);
                 total +=ingrediente.getPrecio();
                 lblTotal.setText(String.valueOf(total));
-                DefaultComboBoxModel<String> comboRemoverModel = (DefaultComboBoxModel<String>) ComboRemoverIngredientes.getModel();
-                comboRemoverModel.addElement(ingrediente.toString());
 
                 Pizza pizza =new Pizza(txtPizza.getName());
                 Topping topi;
@@ -153,35 +161,55 @@ public class fmrPizza1 {
             }
 
         });
-
-
-
-
-        buttonRemoverIngredientes.addActionListener(new ActionListener() {
+        lista1.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Verificar si se ha seleccionado un ingrediente para remover
-                if (ComboRemoverIngredientes.getSelectedItem() != null) {
-                    String ingredienteSeleccionado = (String) ComboRemoverIngredientes.getSelectedItem();
+            public void mouseClicked(MouseEvent e) {
 
-                    // Obtener el precio del ingrediente seleccionado
-                    String[] parts = ingredienteSeleccionado.split("Q");
-                    double precioIngrediente = Double.parseDouble(parts[1].trim());
+                String tipoPizzaSeleccionada = (String) comboTipoPizza.getSelectedItem();
 
-                    // Quitar el ingrediente de lista1
-                    modeloLista.removeElement(ingredienteSeleccionado);
-                    lista1.setModel(modeloLista);
+                List<Topping> toppingsPizza = pizzaToppings.get(tipoPizzaSeleccionada);
 
-                    // Restar el precio del ingrediente a total
-                    total -= precioIngrediente;
-                    lblTotal.setText(String.valueOf(total));
+                if (e.getClickCount() == 2) {
+
+                    if (lista1.getSelectedIndex()!= -1) {
+
+                        String toppingSeleccionado = (String) modeloLista.getElementAt(lista1.getSelectedIndex());
+
+                        // Encuentra el topping correspondiente en la lista de toppingsPizza
+                        Topping topping = null;
+                        for (Topping t : toppingsPizza) {
+                            if (t.toString().equals(toppingSeleccionado)) {
+                                topping = t;
+                                break;
+                            }
+                        }
 
 
-                    DefaultComboBoxModel<String> comboRemoverModel = (DefaultComboBoxModel<String>) ComboRemoverIngredientes.getModel();
-                    comboRemoverModel.removeElement(ingredienteSeleccionado);
+                        // Encuentra el topping correspondiente en la lista de ComboPrepararPizza
+
+                        for (int i = 0; i < ComboPrepararPizza.getItemCount(); i++) {
+                            Topping temp = (Topping) ComboPrepararPizza.getItemAt(i);
+                            if (temp.toString().equals(toppingSeleccionado)) {
+                                topping = temp;
+                                break;
+                            }
+                        }
+
+                        if (topping != null) {
+                            // Resta el precio del topping al total
+                            total -= topping.getPrecio();
+                            lblTotal.setText(String.valueOf(total));
+
+                            // Elimina el topping de la lista
+                            modeloLista.removeElementAt(lista1.getSelectedIndex());
+                        }
+                    }
                 }
             }
         });
+
+
+
 
 
         smalRadioButton.addChangeListener(new ChangeListener() {
@@ -269,16 +297,7 @@ public class fmrPizza1 {
 
     }
 
-    private void cargarIngredientesEnComboRemover() {
-        ComboRemoverIngredientes.removeAllItems(); // Limpia los elementos existentes en ComboRemoverIngredientes
-        int itemCount = modeloLista.getSize(); // Obtiene la cantidad de elementos en modeloLista
 
-        // Agrega cada elemento de modeloLista a ComboRemoverIngredientes
-        for (int i = 0; i < itemCount; i++) {
-            String ingrediente = (String) modeloLista.getElementAt(i);
-            ComboRemoverIngredientes.addItem(ingrediente);
-        }
-    }
 
     private void actualizarTotal() {
         double nuevoTotal = total + precioAdicional;
@@ -303,10 +322,8 @@ public class fmrPizza1 {
             return;
         }
 
-        Pizza pizza = new Pizza(tipoPizzaSeleccionada);
-        modeloLista2.clear();
 
-        List<Topping> ingredientesPizza = pizzaToppings.get(tipoPizzaSeleccionada);
+
 
         modeloLista2.addElement("Preparando.... " + tipoPizzaSeleccionada);
         modeloLista2.addElement("Agregando toppings");
@@ -328,7 +345,5 @@ public class fmrPizza1 {
 
 
 
-
-
-
 }
+

@@ -41,7 +41,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value=""/>
+        </properties>
       </component>
       <component id="adcc2" class="javax.swing.JLabel" binding="lblTotal">
         <constraints>
@@ -105,7 +107,9 @@
       </component>
       <component id="5b2b5" class="javax.swing.JLabel">
         <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="122" height="21"/>
+          </grid>
         </constraints>
         <properties>
           <text value="Tamanio de la pizza"/>

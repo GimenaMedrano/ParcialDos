@@ -15,9 +15,9 @@ public class PizzaDeSobras extends Pizza {
         addTopping(new Topping("Pasas", 10));
         addTopping(new Topping("Pipas de girasol", 10));
         addTopping(new Topping("Calabaza", 20));
-        addTopping(new Topping("Queso azul", 25));
         addTopping(new Topping("Bacon cocido", 30));
         addTopping(new Topping("Sobras de pollo", 35));
+
     }
 }
 
